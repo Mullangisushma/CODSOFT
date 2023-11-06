@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="Calculator">
+        <input type="text" placeholder="0" id="output-screen" />
+        <button class="b">C</button>
+        <button class="b">DEL</button>
+        <button class="c">%</button>
+        <button class="c">/</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="c">x</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="c">-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="c">+</button>
+        <button>.</button>
+        <button>0</button>
+        <button class="equal">=</button>
+      </div>
+    </div>
+    <script>
+      const outputScreen = document.getElementById("output-screen");
+      const buttons = document.querySelectorAll("button");
+      let currentInput = "";
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.textContent;
+
+          if (value === "C") {
+            currentInput = "";
+          } else if (value === "DEL") {
+            currentInput = deleteLast(currentInput);
+          } else if (value === "=") {
+            try {
+              currentInput = evaluateExpression(currentInput);
+            } catch (error) {
+              currentInput = "Error";
+            }
+          } else {
+            currentInput += value;
+          }
+
+          outputScreen.value = currentInput;
+        });
+      });
+
+      function deleteLast(expression) {
+        // Handle potential space between numbers and operators
+        expression = expression.trim();
+
+        // Regular expression to match the last character, including digits and operators
+        const regex = /.$/;
+        expression = expression.replace(regex, "");
+
+        return expression;
+      }
+
+      function evaluateExpression(expression) {
+        // Handle multiplication explicitly
+        expression = expression.replace(/x/g, "*");
+
+        // Use eval() to calculate the result
+        return eval(expression);
+      }
+    </script>
+  </body>
+</html>
